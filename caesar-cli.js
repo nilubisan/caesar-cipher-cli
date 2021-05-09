@@ -24,12 +24,14 @@ const options = program.opts();
 
 if(!options.shift || !options.action) {
     console.log(`Error! Required option ${!options.shift ? '\'shift\'' : '\'action\''} is missed. The program has been aborted`);
+    process.exit(8);
 }
 if (!ALLOWED_ACTIONS.includes(options.action)) {
     console.log (`Action ${options.action} is not allowed. Use one of these instead: ${ALLOWED_ACTIONS.reduce((_, action) => `${_} ${action}`, '')}`);
 }
 if(!Number.isInteger(+options.shift)) {
-    console.log('Shift error!');
+    console.log('Error! Specified shift value is not allowed. Use only integer number instead');
+    process.exit(8);
 }
 
 const inputStream = options.input ? fs.createReadStream(options.input): process.stdin;
