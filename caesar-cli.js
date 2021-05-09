@@ -1,5 +1,6 @@
 const ALLOWED_ACTIONS = ['encode', 'decode'];
 const commander = require('commander');
+const {caesarCipher} = require('./caesar');
 const program = new commander.Command();
 program
 .option(
