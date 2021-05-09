@@ -40,6 +40,10 @@ if(options.input) {
 if(options.output) {
     if(!fs.existsSync(options.output)) process.stderr.write(`Error! Output file on specified path ${options.output} was not found \n`)
 }
+if(options.shift < 0) {
+    options.action = options.action === 'encode' ? 'decode' : 'encode';
+    options.shift = (-options.shift);
+}
 
 const inputStream = options.input ? fs.createReadStream(options.input): process.stdin;
 const outputStream = options.output ? fs.createWriteStream(options.output) : process.stdout;
