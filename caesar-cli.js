@@ -1,4 +1,8 @@
 const ALLOWED_ACTIONS = ['encode', 'decode'];
+const fs = require('fs');
+const process = require('process');
+const {Transform} = require('stream');
+const { pipeline } = require('stream');
 const commander = require('commander');
 const {caesarCipher} = require('./caesar');
 const program = new commander.Command();
@@ -27,3 +31,21 @@ if (!ALLOWED_ACTIONS.includes(options.action)) {
 if(!Number.isInteger(+options.shift)) {
     console.log('Shift error!');
 }
+
+const inputStream = options.input ? fs.createReadStream(options.input): process.stdin;
+const outputStream = options.output ? fs.createWriteStream(options.output) : process.stdout;
+const transformStream = new Transform({
+    transform(data, _, cb) {
+        this.push(caesarCipher(data.toString(), options.shift, options.action));
+        cb();
+    }
+})
+
+pipeline(
+    inputStream,
+    transformStream,
+    outputStream,
+    (err) => {
+        if (err) console.error(err);
+        } 
+)
