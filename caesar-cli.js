@@ -34,6 +34,13 @@ if(!Number.isInteger(+options.shift)) {
     process.exit(8);
 }
 
+if(options.input) {
+    if(!fs.existsSync(options.input)) process.stderr.write(`Error! Input file on specified path ${options.input} was not found \n`);
+}
+if(options.output) {
+    if(!fs.existsSync(options.output)) process.stderr.write(`Error! Output file on specified path ${options.output} was not found \n`)
+}
+
 const inputStream = options.input ? fs.createReadStream(options.input): process.stdin;
 const outputStream = options.output ? fs.createWriteStream(options.output) : process.stdout;
 const transformStream = new Transform({
