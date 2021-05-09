@@ -46,7 +46,7 @@ if(options.shift < 0) {
 }
 
 const inputStream = options.input ? fs.createReadStream(options.input): process.stdin;
-const outputStream = options.output ? fs.createWriteStream(options.output) : process.stdout;
+const outputStream = options.output ? fs.createWriteStream(options.output, {flags: 'a'}) : process.stdout;
 const transformStream = new Transform({
     transform(data, _, cb) {
         this.push(caesarCipher(data.toString(), options.shift, options.action));
